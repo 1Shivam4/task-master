@@ -27,15 +27,15 @@ export class PrismaExceptionFilter implements ExceptionFilter {
       P2025: HttpStatus.NOT_FOUND,
       P2003: HttpStatus.BAD_REQUEST,
     };
-    const status =
-      statusMap[exception.code] ?? HttpStatus.INTERNAL_SERVER_ERROR;
+    const status = statusMap[exception.code] ?? exception.code;
 
     const messageMap: Record<string, string> = {
       P2002: 'A record with this value already exists',
       P2025: 'Record not found',
       P2003: 'Related record not found',
     };
-    const message = messageMap[exception.code] ?? 'Database Error';
+    const message = messageMap[exception.code] ?? exception.message;
+    console.log(exception);
 
     this.logger.warn(
       `${request.method} ${request.url} ${status} — Prisma ${exception.code}: ${message}`,

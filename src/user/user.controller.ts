@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 
@@ -23,7 +16,12 @@ export class UserController {
   }
 
   @Get(':id')
-  find(@Param('id', ParseIntPipe) id: number) {
+  find(@Param('id') id: string) {
     return this.userService.getUser(id);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.userService.deleteUser(id);
   }
 }

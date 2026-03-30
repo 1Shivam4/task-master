@@ -15,12 +15,22 @@ export class UserService {
     return await this.prisma.user.findMany();
   }
 
-  async getUser(id: number): Promise<User> {
+  async getUser(id: string): Promise<User> {
     const user = await this.prisma.user.findFirst({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User Not Found');
+    }
+    return user;
+  }
+
+  async deleteUser(id: string) {
+    const user = await this.prisma.user.delete({ where: { id } });
 
     if (!user) {
       throw new NotFoundException('User Not Fount');
     }
-    return user;
+
+    return 'User deleted successfully';
   }
 }
