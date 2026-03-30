@@ -5,7 +5,7 @@
  
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -16,7 +16,6 @@ datasource db {
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String   @unique
-  name      String?
   profile   Profile?
 
   createdAt DateTime @default(now())
@@ -28,6 +27,8 @@ model Profile {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String    @unique @db.Uuid
 
+  firstName String
+  lastName  String
   bio       String?
   avatarUrl String?
   address   String?
