@@ -11,6 +11,7 @@ import { createLoggerConfig } from './common/logger/logger.config';
 import { AllExceptionFilter } from './common/filters/all-exceptions.filter';
 import { PrismaExceptionFilter } from './common/filters/prisma-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 20 }]),
     PrismaModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
