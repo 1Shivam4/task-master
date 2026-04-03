@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -11,7 +11,9 @@ import { createLoggerConfig } from './common/logger/logger.config';
 import { AllExceptionFilter } from './common/filters/all-exceptions.filter';
 import { PrismaExceptionFilter } from './common/filters/prisma-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { ClerkClientProvider } from './providers/clerk-client.provider';
 import { AuthModule } from './auth/auth.module';
+import { ClerkStrategy } from './auth/clerk.strategy';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { AuthModule } from './auth/auth.module';
   controllers: [AppController],
   providers: [
     AppService,
+    ClerkClientProvider,
+    { provide: APP_GUARD, useClass: ClerkStrategy },
     { provide: APP_FILTER, useClass: AllExceptionFilter },
     { provide: APP_FILTER, useClass: PrismaExceptionFilter },
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
